@@ -1,7 +1,9 @@
 package com.proyecto.gastrosuite.service;
 
 import com.proyecto.gastrosuite.model.Mesa;
+import com.proyecto.gastrosuite.model.Restaurante;
 import com.proyecto.gastrosuite.repository.MesaRepository;
+import com.proyecto.gastrosuite.repository.RestauranteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +13,11 @@ import java.util.Optional;
 public class MesaService {
 
     private final MesaRepository mesaRepository;
+    private final RestauranteRepository restauranteRepository;
 
-    public MesaService(MesaRepository mesaRepository) {
+    public MesaService(MesaRepository mesaRepository, RestauranteRepository restauranteRepository) {
         this.mesaRepository = mesaRepository;
+        this.restauranteRepository = restauranteRepository;
     }
 
     public List<Mesa> obtenerTodas() {
@@ -25,6 +29,10 @@ public class MesaService {
     }
 
     public Mesa guardar(Mesa mesa) {
+        if (mesa.getRestaurante() != null && mesa.getRestaurante().getIdRestaurante() != null) {
+            Restaurante r = restauranteRepository.findById(mesa.getRestaurante().getIdRestaurante()).orElse(mesa.getRestaurante());
+            mesa.setRestaurante(r);
+        }
         return mesaRepository.save(mesa);
     }
 

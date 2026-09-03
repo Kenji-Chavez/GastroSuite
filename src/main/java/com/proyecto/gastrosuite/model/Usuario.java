@@ -30,7 +30,8 @@ public class Usuario {
     @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private List<Rol> roles = new ArrayList<>();
 
-    // Relación con Restaurante: null si es Cliente, con valor si es Admin de ese Restaurante
+    // Relación con Restaurante: null si es Cliente, con valor si es Admin de ese
+    // Restaurante
     @ManyToOne
     @JoinColumn(name = "id_restaurante", nullable = true)
     private Restaurante restaurante;
@@ -38,12 +39,12 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Long getId() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setId(Long id) {
-        this.idUsuario = id;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getUsername() {

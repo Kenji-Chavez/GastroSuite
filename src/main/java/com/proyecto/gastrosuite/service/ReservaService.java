@@ -1,7 +1,11 @@
 package com.proyecto.gastrosuite.service;
 
+import com.proyecto.gastrosuite.model.Mesa;
 import com.proyecto.gastrosuite.model.Reserva;
+import com.proyecto.gastrosuite.model.Usuario;
+import com.proyecto.gastrosuite.repository.MesaRepository;
 import com.proyecto.gastrosuite.repository.ReservaRepository;
+import com.proyecto.gastrosuite.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +15,13 @@ import java.util.Optional;
 public class ReservaService {
 
     private final ReservaRepository reservaRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final MesaRepository mesaRepository;
 
-    public ReservaService(ReservaRepository reservaRepository) {
+    public ReservaService(ReservaRepository reservaRepository, UsuarioRepository usuarioRepository, MesaRepository mesaRepository) {
         this.reservaRepository = reservaRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.mesaRepository = mesaRepository;
     }
 
     public List<Reserva> obtenerTodas() {
@@ -25,6 +33,14 @@ public class ReservaService {
     }
 
     public Reserva guardar(Reserva reserva) {
+        if (reserva.getUsuario() != null && reserva.getUsuario().getIdUsuario() != null) {
+            Usuario u = usuarioRepository.findById(reserva.getUsuario().getIdUsuario()).orElse(reserva.getUsuario());
+            reserva.setUsuario(u);
+        }
+        if (reserva.getMesa() != null && reserva.getMesa().getIdMesa() != null) {
+            Mesa m = mesaRepository.findById(reserva.getMesa().getIdMesa()).orElse(reserva.getMesa());
+            reserva.setMesa(m);
+        }
         return reservaRepository.save(reserva);
     }
 

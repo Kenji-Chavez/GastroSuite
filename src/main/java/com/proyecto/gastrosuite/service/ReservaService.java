@@ -46,15 +46,31 @@ public class ReservaService {
 
     public Optional<Reserva> actualizar(Long id, Reserva reservaDetalles) {
         return reservaRepository.findById(id).map(reserva -> {
+
             reserva.setFechaReserva(reservaDetalles.getFechaReserva());
             reserva.setCantidadPersonas(reservaDetalles.getCantidadPersonas());
             reserva.setEstado(reservaDetalles.getEstado());
-            if (reservaDetalles.getMesa() != null) {
-                reserva.setMesa(reservaDetalles.getMesa());
+
+            if (reservaDetalles.getMesa() != null &&
+                reservaDetalles.getMesa().getIdMesa() != null) {
+
+                Mesa mesa = mesaRepository
+                        .findById(reservaDetalles.getMesa().getIdMesa())
+                        .orElseThrow(() -> new RuntimeException("Mesa no encontrada"));
+
+                reserva.setMesa(mesa);
             }
-            if (reservaDetalles.getUsuario() != null) {
-                reserva.setUsuario(reservaDetalles.getUsuario());
+
+            if (reservaDetalles.getUsuario() != null &&
+                reservaDetalles.getUsuario().getIdUsuario() != null) {
+
+                Usuario usuario = usuarioRepository
+                        .findById(reservaDetalles.getUsuario().getIdUsuario())
+                        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+                reserva.setUsuario(usuario);
             }
+
             return reservaRepository.save(reserva);
         });
     }

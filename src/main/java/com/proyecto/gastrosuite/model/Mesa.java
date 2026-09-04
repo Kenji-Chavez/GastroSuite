@@ -1,6 +1,6 @@
 package com.proyecto.gastrosuite.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -22,7 +22,7 @@ public class Mesa {
     private Boolean estado; // true = Disponible, false = Ocupada/Reservada
 
     // Cada mesa pertenece a un restaurante
-    @JsonIgnoreProperties({"mesas", "hibernateLazyInitializer", "handler"})
+    //@JsonIgnoreProperties({"mesas", "hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_restaurante", nullable = false)
     private Restaurante restaurante;
